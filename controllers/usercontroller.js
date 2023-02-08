@@ -563,7 +563,7 @@ exports.forgotPassword = async (req, res) => {
 		await user.save();
 
 		// Create reset url to email to provided email
-		const resetPasswordUrl = `http://localhost:3000/password-reset/${resetPasswordToken}`;
+		const resetPasswordUrl = `http://44.202.187.100:3000/password-reset/${resetPasswordToken}`;
 
 		// HTML Message
 		const message = `
@@ -1160,7 +1160,7 @@ exports.inviteNewFriend = async (req, res) => {
 		const message = `
             <h1>Your friend ${user.firstname} ${user.lastname} invited to WEBH!</h1>
             <p>Please click on this link to get register to the WebH!</p>
-            <a href="http://localhost:3000/auth" clicktracking=off>Click here</a>
+            <a href="http://44.202.187.100:3000/auth" clicktracking=off>Click here</a>
         `;
 
 		try {
