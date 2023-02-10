@@ -906,15 +906,38 @@ exports.adminImageUpload = async (req, res, next) => {
 
 exports.updateAdmin = async (req, res, next) => {
 	let user;
-
+	console.log(req.body);
 	try {
 		user = await User.findById(req.params.id);
 	} catch (err) {
 		return next(err);
 	}
+	console.log(user);
 
 	user.firstname = req.body.firstname;
 	user.lastname = req.body.lastname;
+
+	try {
+		await user.save();
+	} catch (err) {
+		return next(err);
+	}
+
+	res.json(user);
+};
+
+exports.updateAdminCredential = async (req, res, next) => {
+	let user;
+	console.log(req.body);
+	try {
+		user = await User.findById(req.params.id);
+	} catch (err) {
+		return next(err);
+	}
+	console.log(user);
+
+	user.email = req.body.email;
+	user.password = req.body.password;
 
 	try {
 		await user.save();

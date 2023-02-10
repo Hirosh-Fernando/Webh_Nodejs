@@ -5,7 +5,7 @@ const { usersignup, usersignin, adminSignIn, updateUser, deleteUser, followUser,
 getEducations, updateEducation, deleteEducation, getEducation, 
 getContact, getContacts, updateContact, deleteContact, createEducation, adminImageUpload ,
  createContacts, 
- updateAdmin, check,resetPassword, createSkill, getSkills, getSkill, updateSkill, deleteSkill, createInterest, getInterests, getInterest, updateInterest, deleteInterest, inviteNewFriend
+ updateAdmin, check,resetPassword, createSkill, getSkills, getSkill, updateSkill, deleteSkill, createInterest, getInterests, getInterest, updateInterest, deleteInterest, inviteNewFriend, updateAdminCredential
 
 } = require('../controllers/usercontroller.js');
 
@@ -87,6 +87,7 @@ router.delete('/:id/contact/delete/:cid',deleteContact)
 //admin image uploading
 router.put('/:id/profilePic',adminImageUpload)
 router.put('/:id/updateAdmin',updateAdmin)
+router.put('/:id/resetAdminCredential',updateAdminCredential)
 
 // invite new friend
 router.post("/invite-new-friend", inviteNewFriend)
