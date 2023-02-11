@@ -548,10 +548,10 @@ exports.updatePassword = async (req, res, next) => {
 // forgot password
 exports.forgotPassword = async (req, res) => {
 	const { email } = req.body;
-
+	console.log(email);
 	try {
 		//finding user by email
-		const user = await User.findOne({ email });
+		const user = await User.findOne({ email, isAdmin: false });
 
 		//if user doesn't exist
 		if (!user)
@@ -598,6 +598,58 @@ exports.forgotPassword = async (req, res) => {
 	}
 };
 
+//admin forgot password
+exports.adminForgotPassword = async (req, res) => {
+	const email = req.body.forgot.email;
+	try {
+		//finding user by email
+		const user = await User.findOne({ email, isAdmin: true });
+
+		//if user doesn't exist
+		if (!user)
+			return res.status(404).json({ message: 'No user with this email' });
+
+		// Reset Token Gen and add to database hashed (private) version of token
+		const resetPasswordToken = user.getResetPasswordToken();
+
+		await user.save();
+
+		// Create reset url to email to provided email
+		const resetPasswordUrl = `http://44.202.187.100:3001/password-reset/${resetPasswordToken}`;
+
+		// HTML Message
+		const message = `
+            <h1>You have requested a password reset</h1>
+            <p>Please click on this link to update your password!</p>
+            <a href=${resetPasswordUrl} clicktracking=off>${resetPasswordUrl}</a>
+        `;
+
+		try {
+			//sending the the email
+			await sendEmail({
+				to: user.email,
+				subject: 'Password Reset Request',
+				text: message
+			});
+			res.status(200).json({ success: true, data: 'Email Sent' });
+		} catch (error) {
+			//if the email sending failed remove reset token
+			user.resetPasswordToken = undefined;
+			user.resetPasswordExpire = undefined;
+
+			await user.save();
+
+			res
+				.status(500)
+				.json({ message: 'Email could not be sent', error: error.message });
+		}
+	} catch (error) {
+		res
+			.status(500)
+			.json({ message: 'Something went wrong', error: error.message });
+	}
+};
+
 exports.check = (req, res) => {
 	console.log('working', req.body);
 };
@@ -605,6 +657,7 @@ exports.check = (req, res) => {
 //Reset Password
 exports.resetPassword = async (req, res) => {
 	// Compare token in URL params to hashed token
+	console.log(req.params.resetPasswordToken);
 	const resetPasswordToken = crypto
 		.createHash('sha256')
 		.update(req.params.resetPasswordToken)
@@ -617,10 +670,11 @@ exports.resetPassword = async (req, res) => {
 			resetPasswordExpire: { $gt: Date.now() }
 		});
 
-		if (!user)
+		if (!user) {
 			return res
 				.status(400)
 				.json({ message: 'Invalid Token', error: error.message });
+		}
 
 		//saving the new password
 		user.password = req.body.password;
