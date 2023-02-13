@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
-
 // for mail
 const mailgun = require('mailgun-js');
 const DOMAIN = '';
@@ -13,7 +12,9 @@ const lodash = require('lodash');
 const User = require('../models/User');
 const sendEmail = require('../utils/sendEmail');
 const uuid = require('uuid');
-
+const {google} = require('googleapis')
+const {OAuth2} = google.auth
+const client = new OAuth2('395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com','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',"http://localhost:3001/oauth2callback")
 //user sign in controller
 exports.usersignin = async (req, res) => {
 	const { email, password } = req.body;
@@ -57,6 +58,115 @@ exports.usersignin = async (req, res) => {
 	}
 };
 
+// user google login
+exports.userGoogleSignin = async (req, res) => {
+	const {tokenId} = req.body
+	try{
+		const verify = await client.verifyIdToken({idToken:tokenId,audience:'395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com'})
+
+		const {email_verified,email,name,picture} = verify.payload
+		// password 'BWdX9c$sTwj)pnN9p8.'
+		const password = email + 'BWdX9c$sTwj)pnN9p8.'
+		if(!email_verified)  return res.status(400).json({msg:"Email verification failed"})
+
+		if(email_verified) {
+			const user = await User.findOne({email})
+			const isAdmin = user.isAdmin
+			const googleFirst = user.googleLoginFirst
+			if(isAdmin && !googleFirst) {
+				console.log('logged in');
+				// const isMatch = await bcrypt.compare(password,user.password)
+				// if(!isMatch) return res.status(400).json({msg:"Password is Incorrect"})
+				//creating a token
+				const token = jwt.sign(
+					{ email: user.email, id: user._id },
+					process.env.JWT_SECRET,
+					{ expiresIn: '1h' }
+				);
+				res.status(200).json({ success: true, result: user, token, loggedIn:true });
+			} else if(isAdmin && googleFirst) {
+				console.log('first');
+
+				// const isMatch = await bcrypt.compare(password,user.password)
+				// if(!isMatch) return res.status(400).json({msg:"Password is Incorrect"})
+				//creating a token
+
+				res.status(200).json({ success: true, result: tokenId, email, loggedIn:false });
+			} else if(!isAdmin) {
+				return res.status(401).json({msg:"Your Can't Access this Site"})
+			} 
+			// else {
+
+			// 	const newUser = new User({
+			// 		firstname:name,
+			// 		lastname:name,
+			// 		password:password,
+			// 		email:email,
+			// 		profilePicture:picture
+			// 	})
+			// 	console.log(newUser);
+
+			// 	await newUser.save();
+
+			// 	const token = jwt.sign(
+			// 		{ email: newUser.email, id: newUser._id },
+			// 		process.env.JWT_SECRET,
+			// 		{ expiresIn: '1h' }
+			// 	);
+
+			// 	res.status(200).json({ success: true, result: newUser, token });
+
+			// }
+		}
+		
+
+	} catch (error) {
+		res
+			.status(500)
+			.json({ msg:error.message });
+	}
+};
+
+exports.userGoogleSigninValidation = async (req, res) => {
+	const {password, tokenId} = req.body
+	try{
+		const verify = await client.verifyIdToken({idToken:tokenId,audience:'395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com'})
+
+		const {email_verified,email,name,picture} = verify.payload
+		// password 'BWdX9c$sTwj)pnN9p8.'
+		// const password = email + 'BWdX9c$sTwj)pnN9p8.'
+		if(!email_verified)  return res.status(400).json({msg:"Email verification failed"})
+
+		if(email_verified) {
+			const user = await User.findOne({email ,isAdmin:true})
+			const isMatch = await bcrypt.compare(password,user.password)
+			if(!isMatch) return res.status(400).json({msg:"Password is Incorrect"})
+
+			try{
+				user.googleLoginFirst = false;
+				await user.save()
+				const token = jwt.sign(
+					{ email: user.email, id: user._id },
+					process.env.JWT_SECRET,
+					{ expiresIn: '1h' }
+				);
+				res.status(200).json({ success: true, result: user, token, loggedIn:true });
+			} catch (error) {
+				res
+					.status(500)
+					.json({ msg:error.message });
+			}
+
+				
+		}
+		
+
+	} catch (error) {
+		res
+			.status(500)
+			.json({ msg:error.message });
+	}
+};
 //user sign in controller
 exports.adminSignIn = async (req, res) => {
 	const { email, password } = req.body;
@@ -563,7 +673,7 @@ exports.forgotPassword = async (req, res) => {
 		await user.save();
 
 		// Create reset url to email to provided email
-		const resetPasswordUrl = `http://44.202.187.100:3000/password-reset/${resetPasswordToken}`;
+		const resetPasswordUrl = `http://localhost:3000/password-reset/${resetPasswordToken}`;
 
 		// HTML Message
 		const message = `
@@ -615,7 +725,7 @@ exports.adminForgotPassword = async (req, res) => {
 		await user.save();
 
 		// Create reset url to email to provided email
-		const resetPasswordUrl = `http://44.202.187.100:3001/password-reset/${resetPasswordToken}`;
+		const resetPasswordUrl = `http://localhost:3001/password-reset/${resetPasswordToken}`;
 
 		// HTML Message
 		const message = `
@@ -1237,7 +1347,7 @@ exports.inviteNewFriend = async (req, res) => {
 		const message = `
             <h1>Your friend ${user.firstname} ${user.lastname} invited to WEBH!</h1>
             <p>Please click on this link to get register to the WebH!</p>
-            <a href="http://44.202.187.100:3000/auth" clicktracking=off>Click here</a>
+            <a href="http://localhost:3000/auth" clicktracking=off>Click here</a>
         `;
 
 		try {

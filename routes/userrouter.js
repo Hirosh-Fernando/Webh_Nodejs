@@ -5,15 +5,53 @@ const { usersignup, usersignin, adminSignIn, updateUser, deleteUser, followUser,
 getEducations, updateEducation, deleteEducation, getEducation, 
 getContact, getContacts, updateContact, deleteContact, createEducation, adminImageUpload ,
  createContacts, 
- updateAdmin, check,resetPassword, createSkill, getSkills, getSkill, updateSkill, deleteSkill, createInterest, getInterests, getInterest, updateInterest, deleteInterest, inviteNewFriend, updateAdminCredential, adminForgotPassword
+ updateAdmin, check,resetPassword, createSkill, getSkills, getSkill, updateSkill, deleteSkill, createInterest, getInterests, getInterest, updateInterest, deleteInterest, inviteNewFriend, updateAdminCredential, adminForgotPassword, userGoogleSignin, userGoogleSigninValidation
 
 } = require('../controllers/usercontroller.js');
+
+const passport = require('passport')
+
+// google auth
+
+// router.get(
+//     "/google/callback",
+//     passport.authenticate("google",{
+//         successRedirect:process.env.CLIENTURL,
+//         failureRedirect:'/signin'
+//     })
+// )
+
+// router.get('/login/success',(req,res) => {
+//     if(req.user){
+//         res.status(200).json({
+//             error:false,
+//             message:"Successfully Logged in",
+//             user:req.user
+//         })
+//     } else {
+//         res.status(403).json({
+//             error:true,
+//             message:"Logged in Failed"
+//         })
+//     }
+// })
+
+// router.get('/google',passport.authenticate('google',['profile','email']))
+// router.get('/google/logout',(req,res) => {
+//     req.logout();
+//     res.redirect(process.env.CLIENTURL)
+// })
 
 //user sign up
 router.post('/signup', usersignup);
 
 //user sign in
 router.post('/signin', usersignin);
+
+//user google login 
+router.post('/google_login', userGoogleSignin);
+router.post('/google_login/validation', userGoogleSigninValidation);
+
 
 //admin sign in
 router.post('/admin-signin', adminSignIn);

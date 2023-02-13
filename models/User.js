@@ -33,7 +33,11 @@ const UserSchema = new Schema({
         required: true,
         minlength: 8,
         //select set to false so password doesn't come when querying automatically
-        select: false
+        select: true
+    },
+    googleLoginFirst:{
+            type:Boolean,
+            default:true
     },
     
     status: {
