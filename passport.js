@@ -6,7 +6,7 @@ passport.use(
         {
             clientID:'395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com',
             clientSecret:'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',
-            callbackURL:"http://localhost:3001/oauth2callback",
+            callbackURL:"http://44.202.187.100:3001/oauth2callback",
             scope:['profile','email']
         },
         function(accessToken,refreshToken,profile,callback){

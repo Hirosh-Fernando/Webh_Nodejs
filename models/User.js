@@ -39,7 +39,9 @@ const UserSchema = new Schema({
             type:Boolean,
             default:true
     },
-    
+    googlePassword:{
+        type:String,
+    },
     status: {
         type: Boolean,
         default: true
@@ -97,6 +99,20 @@ UserSchema.pre("save", async function (next) {
 
     //hashing the with difficulty level 12
     this.password = await bcrypt.hash(this.password, 12);
+    next();
+})
+
+//this function run before saving data to database
+UserSchema.pre("save", async function (next) {
+
+    //hashing the password
+    //checking if the password is already hashed
+    if (!this.isModified("googlePassword")) {
+        next();
+    }
+
+    //hashing the with difficulty level 12
+    this.googlePassword = await bcrypt.hash(this.googlePassword, 12);
     next();
 })
 

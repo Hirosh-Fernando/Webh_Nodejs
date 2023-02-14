@@ -5,7 +5,7 @@ const { usersignup, usersignin, adminSignIn, updateUser, deleteUser, followUser,
 getEducations, updateEducation, deleteEducation, getEducation, 
 getContact, getContacts, updateContact, deleteContact, createEducation, adminImageUpload ,
  createContacts, 
- updateAdmin, check,resetPassword, createSkill, getSkills, getSkill, updateSkill, deleteSkill, createInterest, getInterests, getInterest, updateInterest, deleteInterest, inviteNewFriend, updateAdminCredential, adminForgotPassword, userGoogleSignin, userGoogleSigninValidation
+ updateAdmin, check,resetPassword, createSkill, getSkills, getSkill, updateSkill, deleteSkill, createInterest, getInterests, getInterest, updateInterest, deleteInterest, inviteNewFriend, updateAdminCredential, adminForgotPassword, userGoogleSignin, userGoogleSigninValidation, adminGoogleSignin, adminGoogleSigninValidation
 
 } = require('../controllers/usercontroller.js');
 
@@ -49,8 +49,9 @@ router.post('/signup', usersignup);
 router.post('/signin', usersignin);
 
 //user google login 
-router.post('/google_login', userGoogleSignin);
-router.post('/google_login/validation', userGoogleSigninValidation);
+router.post('/admin_google_login', adminGoogleSignin);
+router.post('/user_google_login', userGoogleSignin);
+router.post('/admin_google_login/validation', adminGoogleSigninValidation);
 
 
 //admin sign in
