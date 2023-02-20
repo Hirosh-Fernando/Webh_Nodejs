@@ -1,24 +1,25 @@
-const GoogleStrategy = require('passport-google-oauth2').Strategy;
-const passport  = require('passport')
+const GoogleStrategy = require('passport-google-oauth2').Strategy
+const passport = require('passport')
 
 passport.use(
-    new GoogleStrategy(
-        {
-            clientID:'395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com',
-            clientSecret:'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',
-            callbackURL:"http://44.202.187.100:3001/oauth2callback",
-            scope:['profile','email']
-        },
-        function(accessToken,refreshToken,profile,callback){
-            callback(null,profile);
-        }
-    )
+	new GoogleStrategy(
+		{
+			clientID:
+				'395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com',
+			clientSecret: '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',
+			callbackURL: 'http://18.205.10.114:3001/oauth2callback',
+			scope: ['profile', 'email']
+		},
+		function (accessToken, refreshToken, profile, callback) {
+			callback(null, profile)
+		}
+	)
 )
 
-passport.serializeUser((user,done) => {
-    done(null,user)
+passport.serializeUser((user, done) => {
+	done(null, user)
 })
 
-passport.deserializeUser((user,done) => {
-    done(null,user)
+passport.deserializeUser((user, done) => {
+	done(null, user)
 })
