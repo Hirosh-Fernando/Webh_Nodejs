@@ -27,7 +27,7 @@ exports.createPost = async (req, res,next) => {
 		video: req.body.video,
 	});
 
-
+	console.log(newPost);
 	try {
 		await newPost.save();
 		res.status(200).json(newPost);
@@ -192,7 +192,7 @@ exports.commentPost = async (req, res) => {
 	const id = uuid.v1()
 	try {
 		const post = await PostModel.findById(postId);
-		await post.updateOne({ $push: { comments: { userId,id:id, value} } });
+		await post.updateOne({ $push: { comments: { userId,id:id, value} } });   
 		res.status(200).json({ status: 'Comment Added' });
 	} catch (error) {
 		res.status(500).json({ status: 'Error with Like', error: error.message });
