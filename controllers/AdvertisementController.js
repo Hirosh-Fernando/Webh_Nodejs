@@ -1,101 +1,86 @@
-
-
-const Advertisement = require('../models/AdvertisementModel');
-const HttpError = require('../models/http-error')
+const Advertisement = require('../models/AdvertisementModel')
+const httpsError = require('../models/https-error')
 
 exports.createAdvertisement = async (req, res, next) => {
-
-    const {name,image,desc,expiry} = req.body
+	const { name, image, desc, expiry } = req.body
 
 	const newAdvertisement = new Advertisement({
-       name:name,
-	   image:image,
-	   desc:desc,
-	   expiry:expiry
-	});
+		name: name,
+		image: image,
+		desc: desc,
+		expiry: expiry
+	})
 
 	try {
-		await newAdvertisement.save();
+		await newAdvertisement.save()
 	} catch (err) {
-		return next(err);
-
+		return next(err)
 	}
-	res.json( newAdvertisement);
-};
-
+	res.json(newAdvertisement)
+}
 
 exports.getAdvertisements = async (req, res, next) => {
-	let advertisements;
+	let advertisements
 
 	try {
-		advertisements = await Advertisement.find();
+		advertisements = await Advertisement.find()
 	} catch (err) {
-
-		return next(err);
+		return next(err)
 	}
 
-
-		res.status(200).json(
-			advertisements
-		);
-	
-};
+	res.status(200).json(advertisements)
+}
 
 exports.getAdvertisement = async (req, res, next) => {
-
-
-
-	const { id } = req.params;
-	let advertisement;
+	const { id } = req.params
+	let advertisement
 	try {
-		advertisement = await Advertisement.findById(id);
+		advertisement = await Advertisement.findById(id)
 	} catch (err) {
-
-		return next(err);
+		return next(err)
 	}
 
-		return res.status(201).json(advertisement);
-};
-
+	return res.status(201).json(advertisement)
+}
 
 exports.deleteAdvertisementById = async (req, res, next) => {
-	const id = req.params.id;
-	let advertisement;
+	const id = req.params.id
+	let advertisement
 	try {
-		advertisement = await Advertisement.findById(id);
+		advertisement = await Advertisement.findById(id)
 	} catch (err) {
-		const error = new HttpError(
+		const error = new httpsError(
 			'Something went wrong, could not delete advertisement',
 			500
-		);
-		return next(error);
+		)
+		return next(error)
 	}
 
 	try {
-		await advertisement.remove();
+		await advertisement.remove()
 	} catch (err) {
-		const error = new HttpError(
+		const error = new httpsError(
 			'Something went wrong, could not delete advertisement',
 			500
-		);
-		return next(error);
+		)
+		return next(error)
 	}
-	res.status(200).json({ message: 'Deleted advertisement' });
-};
+	res.status(200).json({ message: 'Deleted advertisement' })
+}
 
 exports.updateAdvertisementById = async (req, res, next) => {
-	const { name,image,desc,expiry} = req.body;
+	const { name, image, desc, expiry } = req.body
 
-	const id  = req.params.id
-	let advertisement;
+	const id = req.params.id
+	let advertisement
 	try {
-		advertisement = await Advertisement.findById(id);
+		advertisement = await Advertisement.findById(id)
 	} catch (err) {
-		const error = new HttpError(
+		const error = new httpsError(
 			'Something went wrong, could not find advertisement',
 			500
-		);
-		return next(error);
+		)
+		return next(error)
 	}
 
 	advertisement.name = name
@@ -104,15 +89,11 @@ exports.updateAdvertisementById = async (req, res, next) => {
 	advertisement.image = image
 
 	try {
-		await advertisement.save();
+		await advertisement.save()
 	} catch (err) {
-		const error = new HttpError('Updated advertisement is not saved ', 500);
-		return next(error);
+		const error = new httpsError('Updated advertisement is not saved ', 500)
+		return next(error)
 	}
 
-	res.status(200).json(
-		advertisement
-	);
-};
-
-
+	res.status(200).json(advertisement)
+}

@@ -1,104 +1,97 @@
-
-const Feedback = require('../models/FeedbackModel');
-const HttpError = require('../models/http-error')
+const Feedback = require('../models/FeedbackModel')
+const httpsError = require('../models/https-error')
 
 exports.createFeedback = async (req, res, next) => {
+	const { firstName, lastName, email, industry, message } = req.body
 
-    const {firstName,lastName,email,industry,message} = req.body;
-	
 	const newFeedback = new Feedback({
-        firstName:firstName,
-        lastName:lastName,
-		email:email,
-        industry:industry,
-        message:message
-	});
+		firstName: firstName,
+		lastName: lastName,
+		email: email,
+		industry: industry,
+		message: message
+	})
 
 	try {
-		await newFeedback.save();
+		await newFeedback.save()
 	} catch (err) {
-		return next(err);
-
+		return next(err)
 	}
-	res.json({ newFeedback: newFeedback.toObject({ getters: true }) });
-};
-
+	res.json({ newFeedback: newFeedback.toObject({ getters: true }) })
+}
 
 exports.getFeedbacks = async (req, res, next) => {
-	let feedbacks;
+	let feedbacks
 
 	try {
-		feedbacks = await Feedback.find();
+		feedbacks = await Feedback.find()
 	} catch (err) {
-
-		return next(err);
+		return next(err)
 	}
 
 	if (!feedbacks || feedbacks.length === 0) {
-		res.status(201).json({ message: 'There is no feedbacks' });
+		res.status(201).json({ message: 'There is no feedbacks' })
 	} else {
 		res.status(200).json({
-			feedbacks: feedbacks.map((feedback) => feedback.toObject({ getters: true }))
-		});
+			feedbacks: feedbacks.map(feedback => feedback.toObject({ getters: true }))
+		})
 	}
-};
+}
 
 exports.getFeedback = async (req, res, next) => {
-	const { feedbackId } = req.params;
-	let feedback;
+	const { feedbackId } = req.params
+	let feedback
 	try {
-		feedback = await Feedback.findById(feedbackId);
+		feedback = await Feedback.findById(feedbackId)
 	} catch (err) {
-
-		return next(err);
+		return next(err)
 	}
 
 	if (!feedback) {
-		res.status(201).json({ message: 'There is no Post ' });
+		res.status(201).json({ message: 'There is no Post ' })
 	} else {
-		return res.status(201).json(feedback.toObject({ getters: true }));
+		return res.status(201).json(feedback.toObject({ getters: true }))
 	}
-};
-
+}
 
 exports.deleteFeedbackById = async (req, res, next) => {
-	const feedbackId = req.params.feedbackId;
-	let feedback;
+	const feedbackId = req.params.feedbackId
+	let feedback
 	try {
-		feedback = await Feedback.findById(feedbackId);
+		feedback = await Feedback.findById(feedbackId)
 	} catch (err) {
-		const error = new HttpError(
+		const error = new httpsError(
 			'Something went wrong, could not delete feedback',
 			500
-		);
-		return next(error);
+		)
+		return next(error)
 	}
 
 	try {
-		await feedback.remove();
+		await feedback.remove()
 	} catch (err) {
-		const error = new HttpError(
+		const error = new httpsError(
 			'Something went wrong, could not delete feedback',
 			500
-		);
-		return next(error);
+		)
+		return next(error)
 	}
-	res.status(200).json({ message: 'Deleted feedback' });
-};
+	res.status(200).json({ message: 'Deleted feedback' })
+}
 
 exports.updateFeedbackById = async (req, res, next) => {
-	const { firstname,lastname,email,industry,message} = req.body;
+	const { firstname, lastname, email, industry, message } = req.body
 
-	const id  = req.params.feedbackId
-	let feedback;
+	const id = req.params.feedbackId
+	let feedback
 	try {
-		feedback = await Feedback.findById(id);
+		feedback = await Feedback.findById(id)
 	} catch (err) {
-		const error = new HttpError(
+		const error = new httpsError(
 			'Something went wrong, could not find Post',
 			500
-		);
-		return next(error);
+		)
+		return next(error)
 	}
 
 	feedback.firstName = firstname
@@ -108,13 +101,13 @@ exports.updateFeedbackById = async (req, res, next) => {
 	feedback.message = message
 
 	try {
-		await feedback.save();
+		await feedback.save()
 	} catch (err) {
-		const error = new HttpError('Updated post is not saved ', 500);
-		return next(error);
+		const error = new httpsError('Updated post is not saved ', 500)
+		return next(error)
 	}
 
 	res.status(200).json({
 		feedback: feedback.toObject({ getters: true })
-	});
-};
+	})
+}

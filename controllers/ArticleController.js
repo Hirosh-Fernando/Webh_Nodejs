@@ -1,92 +1,88 @@
-// const HttpError = require('../models/http-error');
-const Article = require('../models/ArticleModel');
+// const httpsError = require('../models/https-error');
+const Article = require('../models/ArticleModel')
 
 const createArticle = async (req, res, next) => {
-	const { title, desc, imageUrl } = req.body;
+	const { title, desc, imageUrl } = req.body
 
 	const newArticle = new Article({
 		desc: desc,
 		title: title,
-		image:imageUrl
-	});
+		image: imageUrl
+	})
 
 	try {
-		await newArticle.save();
+		await newArticle.save()
 	} catch (err) {
-		return next(err);
+		return next(err)
 	}
-	res.json( newArticle);
-};
+	res.json(newArticle)
+}
 
 const getArticles = async (req, res, next) => {
-	let articles;
+	let articles
 
 	try {
-		articles = await Article.find();
+		articles = await Article.find()
 	} catch (err) {
-		return next(err);
+		return next(err)
 	}
 
-	res.status(200).json(
-		articles
-	);
-};
+	res.status(200).json(articles)
+}
 
 const getArticle = async (req, res, next) => {
-	const { id } = req.params;
-	let article;
+	const { id } = req.params
+	let article
 	try {
-		article = await Article.findById(id);
+		article = await Article.findById(id)
 	} catch (err) {
-		return next(err);
+		return next(err)
 	}
-	res.status(201).json(article);
-};
+	res.status(201).json(article)
+}
 
 const deleteArticle = async (req, res, next) => {
-	const id = req.params.id;
-	let article;
+	const id = req.params.id
+	let article
 	try {
-		article = await Article.findById(id);
+		article = await Article.findById(id)
 	} catch (err) {
-		return next(err);
+		return next(err)
 	}
 
 	try {
-		await article.remove();
+		await article.remove()
 	} catch (err) {
-		return next(err);
+		return next(err)
 	}
-	res.status(200).json({ message: 'Deleted article' });
-};
+	res.status(200).json({ message: 'Deleted article' })
+}
 
 const updateArticle = async (req, res, next) => {
-	const { desc, title, image } = req.body;
-	const id = req.params.id;
-	let article;
+	const { desc, title, image } = req.body
+	const id = req.params.id
+	let article
 	try {
-		article = await Article.findById(id);
+		article = await Article.findById(id)
 	} catch (err) {
-		return next(err);
+		return next(err)
 	}
 
-	article.title = title;
-	article.desc = desc;
-	article.image = image;
+	article.title = title
+	article.desc = desc
+	article.image = image
 
 	try {
-		await article.save();
+		await article.save()
 	} catch (err) {
-		return next(err);
+		return next(err)
 	}
 
-	res.status(200).json(
-		article
-	);
-};
+	res.status(200).json(article)
+}
 
-exports.getArticles = getArticles;
-exports.getArticle = getArticle;
-exports.createArticle = createArticle;
-exports.updateArticle = updateArticle;
-exports.deleteArticle = deleteArticle;
+exports.getArticles = getArticles
+exports.getArticle = getArticle
+exports.createArticle = createArticle
+exports.updateArticle = updateArticle
+exports.deleteArticle = deleteArticle

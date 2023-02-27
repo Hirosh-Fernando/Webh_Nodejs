@@ -1,9 +1,8 @@
-class HttpError extends Error {
+class httpsError extends Error {
 	constructor(message, errorCode) {
-		super(message);
-        this.code = errorCode
+		super(message)
+		this.code = errorCode
 	}
 }
 
-
-module.exports = HttpError
+module.exports = httpsError
