@@ -78,9 +78,9 @@ mongoose.connect(URL, {
 // })
 
 // var http = require('https');
-var privateKey = fs.readFileSync('./Cert/abc.key', 'utf8').toString()
-var certificate = fs.readFileSync('./Cert/mywebh.com.crt', 'utf8').toString()
-var ca = fs.readFileSync('./Cert/intermediate.crt', 'utf8').toString()
+var privateKey = fs.readFileSync('./cert/abc.key', 'utf8').toString()
+var certificate = fs.readFileSync('./cert/mywebh.com.crt', 'utf8').toString()
+var ca = fs.readFileSync('./cert/intermediate.crt', 'utf8').toString()
 var credentials = { key: privateKey, cert: certificate, ca: ca }
 // var https = http.createServer(credentials, app);
 

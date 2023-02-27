@@ -17,7 +17,7 @@ const { OAuth2 } = google.auth
 const client = new OAuth2(
 	'395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com',
 	'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',
-	'http://18.205.10.114'
+	'https://18.205.10.114'
 )
 //user sign in controller
 exports.usersignin = async (req, res) => {
