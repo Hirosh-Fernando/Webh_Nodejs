@@ -1,4 +1,3 @@
-// const httpsError = require('../models/https-error');
 const Article = require('../models/ArticleModel')
 
 const createArticle = async (req, res, next) => {

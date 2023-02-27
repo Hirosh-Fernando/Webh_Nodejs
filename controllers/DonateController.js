@@ -1,5 +1,4 @@
 const Donate = require('../models/DonateModel')
-const httpsError = require('../models/https-error')
 
 //adding new donation
 const addDonate = async (req, res, next) => {
@@ -63,21 +62,15 @@ const deleteDonate = async (req, res, next) => {
 	try {
 		donation = await Donate.findById(donationId)
 	} catch (err) {
-		const error = new httpsError(
-			'Something went wrong, could not delete donation',
-			500
-		)
-		return next(error)
+		
+		return next(err)
 	}
 
 	try {
 		await donation.remove()
 	} catch (err) {
-		const error = new httpsError(
-			'Something went wrong, could not delete donation',
-			500
-		)
-		return next(error)
+
+		return next(err)
 	}
 	res.status(200).json({ message: 'Deleted donation' })
 }
@@ -91,11 +84,8 @@ const updateDonate = async (req, res, next) => {
 	try {
 		donation = await Donate.findById(id)
 	} catch (err) {
-		const error = new httpsError(
-			'Something went wrong, could not find Post',
-			500
-		)
-		return next(error)
+		
+		return next(err)
 	}
 
 	donation.name = name
@@ -106,8 +96,7 @@ const updateDonate = async (req, res, next) => {
 	try {
 		await donation.save()
 	} catch (err) {
-		const error = new httpsError('Updated donation is not saved ', 500)
-		return next(error)
+		return next(err)
 	}
 
 	res.status(200).json({

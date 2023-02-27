@@ -1,6 +1,5 @@
 const FAQModel = require('../models/FAQModel')
 const mongoose = require('mongoose')
-const httpsError = require('../models/https-error')
 
 //add new doc
 exports.createFAQ = async (req, res, next) => {

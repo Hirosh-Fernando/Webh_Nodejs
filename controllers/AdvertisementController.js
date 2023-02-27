@@ -1,5 +1,4 @@
 const Advertisement = require('../models/AdvertisementModel')
-const httpsError = require('../models/https-error')
 
 exports.createAdvertisement = async (req, res, next) => {
 	const { name, image, desc, expiry } = req.body
@@ -49,21 +48,15 @@ exports.deleteAdvertisementById = async (req, res, next) => {
 	try {
 		advertisement = await Advertisement.findById(id)
 	} catch (err) {
-		const error = new httpsError(
-			'Something went wrong, could not delete advertisement',
-			500
-		)
-		return next(error)
+		
+		return next(err)
 	}
 
 	try {
 		await advertisement.remove()
 	} catch (err) {
-		const error = new httpsError(
-			'Something went wrong, could not delete advertisement',
-			500
-		)
-		return next(error)
+
+		return next(err)
 	}
 	res.status(200).json({ message: 'Deleted advertisement' })
 }
@@ -76,11 +69,8 @@ exports.updateAdvertisementById = async (req, res, next) => {
 	try {
 		advertisement = await Advertisement.findById(id)
 	} catch (err) {
-		const error = new httpsError(
-			'Something went wrong, could not find advertisement',
-			500
-		)
-		return next(error)
+	
+		return next(err)
 	}
 
 	advertisement.name = name
@@ -91,8 +81,8 @@ exports.updateAdvertisementById = async (req, res, next) => {
 	try {
 		await advertisement.save()
 	} catch (err) {
-		const error = new httpsError('Updated advertisement is not saved ', 500)
-		return next(error)
+		
+		return next(err)
 	}
 
 	res.status(200).json(advertisement)

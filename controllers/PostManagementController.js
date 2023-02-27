@@ -1,5 +1,4 @@
 const Post = require('../models/PostManagementModel')
-const httpsError = require('../models/https-error')
 
 exports.createPost = async (req, res, next) => {
 	const { name, description, image } = req.body
@@ -69,21 +68,15 @@ exports.deletePostById = async (req, res, next) => {
 	try {
 		post = await Post.findById(postId)
 	} catch (err) {
-		const error = new httpsError(
-			'Something went wrong, could not delete Post',
-			500
-		)
-		return next(error)
+		
+		return next(err)
 	}
 
 	try {
 		await post.remove()
 	} catch (err) {
-		const error = new httpsError(
-			'Something went wrong, could not delete Post',
-			500
-		)
-		return next(error)
+	
+		return next(err)
 	}
 	res.status(200).json({ message: 'Deleted Post' })
 }
@@ -95,11 +88,8 @@ exports.updatePostById = async (req, res, next) => {
 	try {
 		post = await Post.findById(id)
 	} catch (err) {
-		const error = new httpsError(
-			'Something went wrong, could not find Post',
-			500
-		)
-		return next(error)
+		
+		return next(err)
 	}
 
 	post.description = description
@@ -109,8 +99,8 @@ exports.updatePostById = async (req, res, next) => {
 	try {
 		await post.save()
 	} catch (err) {
-		const error = new httpsError('Updated post is not saved ', 500)
-		return next(error)
+		
+		return next(err)
 	}
 
 	res.status(200).json(post)

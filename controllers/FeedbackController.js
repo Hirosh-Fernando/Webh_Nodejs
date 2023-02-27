@@ -1,5 +1,4 @@
 const Feedback = require('../models/FeedbackModel')
-const httpsError = require('../models/https-error')
 
 exports.createFeedback = async (req, res, next) => {
 	const { firstName, lastName, email, industry, message } = req.body
@@ -60,21 +59,15 @@ exports.deleteFeedbackById = async (req, res, next) => {
 	try {
 		feedback = await Feedback.findById(feedbackId)
 	} catch (err) {
-		const error = new httpsError(
-			'Something went wrong, could not delete feedback',
-			500
-		)
-		return next(error)
+		
+		return next(err)
 	}
 
 	try {
 		await feedback.remove()
 	} catch (err) {
-		const error = new httpsError(
-			'Something went wrong, could not delete feedback',
-			500
-		)
-		return next(error)
+
+		return next(err)
 	}
 	res.status(200).json({ message: 'Deleted feedback' })
 }
@@ -87,11 +80,8 @@ exports.updateFeedbackById = async (req, res, next) => {
 	try {
 		feedback = await Feedback.findById(id)
 	} catch (err) {
-		const error = new httpsError(
-			'Something went wrong, could not find Post',
-			500
-		)
-		return next(error)
+	
+		return next(err)
 	}
 
 	feedback.firstName = firstname
@@ -103,8 +93,8 @@ exports.updateFeedbackById = async (req, res, next) => {
 	try {
 		await feedback.save()
 	} catch (err) {
-		const error = new httpsError('Updated post is not saved ', 500)
-		return next(error)
+		
+		return next(err)
 	}
 
 	res.status(200).json({
