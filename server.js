@@ -4,7 +4,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
 const path = require('path')
-const httpss = require('httpss')
+const https = require('https')
 const fs = require('fs')
 
 //google
@@ -78,13 +78,13 @@ mongoose.connect(URL, {
 // })
 
 // var https = require('httpss');
-var privateKey = fs.readFileSync('./cert/abc.key', 'utf8').toString()
-var certificate = fs.readFileSync('./cert/mywebh.com.crt', 'utf8').toString()
-var ca = fs.readFileSync('./cert/intermediate.crt', 'utf8').toString()
+var privateKey = fs.readFileSync('./Cert/abc.key', 'utf8').toString()
+var certificate = fs.readFileSync('./Cert/mywebh.com.crt', 'utf8').toString()
+var ca = fs.readFileSync('./Cert/intermediate.crt', 'utf8').toString()
 var credentials = { key: privateKey, cert: certificate, ca: ca }
 // var httpss = https.createServer(credentials, app);
 
-const sslServer = httpss.createServer(credentials, app)
+const sslServer = https.createServer(credentials, app)
 
 app.get('/', (req, res) => {
 	res.json('server started')
