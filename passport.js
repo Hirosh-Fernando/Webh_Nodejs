@@ -1,12 +1,11 @@
 const GoogleStrategy = require('passport-google-oauth2').Strategy
 const passport = require('passport')
-
 passport.use(
 	new GoogleStrategy(
 		{
 			clientID:
-				'395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com',
-			clientSecret: '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',
+				'266665356257-hegodqq6j6ivro28ml8bta1tgmlbqnq8.apps.googleusercontent.com',
+			clientSecret: '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',
 			callbackURL: 'https://18.205.10.114:3001/oauth2callback',
 			scope: ['profile', 'email']
 		},

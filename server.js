@@ -72,24 +72,23 @@ mongoose.connect(URL, {
 })
 
 //database connection
-// const connection = mongoose.connection
-// connection.once('open', function () {
-// 	console.log('db connection success')
-// })
+const connection = mongoose.connection
+connection.once('open', function () {
+	console.log('db connection success')
+})
 
-// var https = require('httpss');
-var privateKey = fs.readFileSync('./Cert/abc.key', 'utf8').toString()
-var certificate = fs.readFileSync('./Cert/mywebh.com.crt', 'utf8').toString()
-var ca = fs.readFileSync('./Cert/intermediate.crt', 'utf8').toString()
-var credentials = { key: privateKey, cert: certificate, ca: ca }
-// var httpss = https.createServer(credentials, app);
+// var privateKey = fs.readFileSync('./Cert/abc.key', 'utf8').toString()
+// var certificate = fs.readFileSync('./Cert/mywebh.com.crt', 'utf8').toString()
+// var ca = fs.readFileSync('./Cert/intermediate.crt', 'utf8').toString()
+// var credentials = { key: privateKey, cert: certificate, ca: ca }
 
-const sslServer = https.createServer(credentials, app)
+// const sslServer = https.createServer(credentials, app)
 
 app.get('/', (req, res) => {
 	res.json('server started')
 })
-sslServer.listen(8070, () => console.log('secure server'))
+
+// sslServer.listen(8070, () => console.log('secure server'))
 
 //when https://18.205.10.114:8070/request ran it will execute FAQRoute.js file
 app.use('/faq', FAQRoute)
@@ -171,12 +170,12 @@ app.use('/contact', ContactRoute)
 
 //defining a port to run the application
 //use port 8070 or use any other port if the 8070 is unavailable
-// const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 8080
 
 //running the app in previously defined port
-// const server = app.listen(PORT, () => {
-// 	console.log(`Server is up and running on: ${PORT}`)
-// })
+const server = app.listen(PORT, () => {
+	console.log(`Server is up and running on: ${PORT}`)
+})
 
 //if the server crashed show it simply and stop the server
 process.on('unhandledRejection', (error, promise) => {

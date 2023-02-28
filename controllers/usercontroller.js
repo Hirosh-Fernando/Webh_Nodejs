@@ -8,16 +8,16 @@ const mg = mailgun({ apiKey: process.env.MAILGUN_APIKEY, domain: DOMAIN })
 
 // loadash
 const lodash = require('lodash')
-
+// 395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com
 const User = require('../models/User')
 const sendEmail = require('../utils/sendEmail')
 const uuid = require('uuid')
 const { google } = require('googleapis')
 const { OAuth2 } = google.auth
 const client = new OAuth2(
-	'395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com',
-	'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',
-	'httpss://18.205.10.114'
+	'266665356257-hegodqq6j6ivro28ml8bta1tgmlbqnq8.apps.googleusercontent.com',
+	'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',
+	'https://18.205.10.114'
 )
 //user sign in controller
 exports.usersignin = async (req, res) => {
@@ -70,11 +70,11 @@ exports.userGoogleSignin = async (req, res) => {
 		const verify = await client.verifyIdToken({
 			idToken: tokenId,
 			audience:
-				'395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com'
+				'266665356257-hegodqq6j6ivro28ml8bta1tgmlbqnq8.apps.googleusercontent.com'
 		})
 		const { email_verified, email, name, picture } = verify.payload
 		// password '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'
-		const password = email + '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'
+		const password = email + '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'
 		if (!email_verified)
 			return res.status(400).json({ msg: 'Email verification failed' })
 
@@ -126,7 +126,8 @@ exports.adminGoogleSignin = async (req, res) => {
 		const verify = await client.verifyIdToken({
 			idToken: tokenId,
 			audience:
-				'395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com'
+				'266665356257-hegodqq6j6ivro28ml8bta1tgmlbqnq8.apps.googleusercontent.com'
+			// '395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com'
 		})
 
 		const { email_verified, email, name, picture } = verify.payload
@@ -198,7 +199,8 @@ exports.adminGoogleSigninValidation = async (req, res) => {
 		const verify = await client.verifyIdToken({
 			idToken: tokenId,
 			audience:
-				'395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com'
+				'266665356257-hegodqq6j6ivro28ml8bta1tgmlbqnq8.apps.googleusercontent.com'
+			// '395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com'
 		})
 
 		const { email_verified, email, name, picture } = verify.payload
@@ -238,7 +240,8 @@ exports.userGoogleSigninValidation = async (req, res) => {
 		const verify = await client.verifyIdToken({
 			idToken: tokenId,
 			audience:
-				'395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com'
+				'266665356257-hegodqq6j6ivro28ml8bta1tgmlbqnq8.apps.googleusercontent.com'
+			// '395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com'
 		})
 
 		const { email_verified, email, name, picture } = verify.payload

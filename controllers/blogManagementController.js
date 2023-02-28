@@ -23,7 +23,6 @@ exports.createBlog = async (req, res, next) => {
 // 	try {
 // 		blogs = await Blog.find();
 // 	} catch (err) {
-// 		// const error = new httpsError('signing up failed could not save ', 500);
 // 		return next(error);
 // 	}
 
@@ -45,13 +44,11 @@ exports.getBlogs = async (req, res) => {
 			})
 		)
 	} catch (error) {
-		res
-			.status(500)
-			.json({
-				success: false,
-				message: 'Something went wrong',
-				error: error.message
-			})
+		res.status(500).json({
+			success: false,
+			message: 'Something went wrong',
+			error: error.message
+		})
 	}
 }
 
@@ -71,20 +68,14 @@ exports.deleteBlogById = async (req, res, next) => {
 	try {
 		blog = await Blog.findById(blogId)
 	} catch (err) {
-		const error = new httpsError(
-			'Something went wrong, could not delete blog',
-			500
-		)
+		
 		return next(error)
 	}
 
 	try {
 		await blog.remove()
 	} catch (err) {
-		const error = new httpsError(
-			'Something went wrong, could not delete blog',
-			500
-		)
+		
 		return next(error)
 	}
 	res.status(200).json({ message: 'Deleted blog' })
@@ -97,10 +88,7 @@ exports.updateBlogById = async (req, res, next) => {
 	try {
 		blog = await Blog.findById(id)
 	} catch (err) {
-		const error = new httpsError(
-			'Something went wrong, could not find blog',
-			500
-		)
+	
 		return next(error)
 	}
 
@@ -111,7 +99,6 @@ exports.updateBlogById = async (req, res, next) => {
 	try {
 		await blog.save()
 	} catch (err) {
-		const error = new httpsError('Updated blog is not saved ', 500)
 		return next(error)
 	}
 
