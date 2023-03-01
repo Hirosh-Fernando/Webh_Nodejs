@@ -85,7 +85,7 @@ var credentials = { key: privateKey, cert: certificate, ca: ca }
 const sslServer = https.createServer(credentials, app)
 
 app.get('/', (req, res) => {
-	res.json('server started')
+	res.json('secure server started')
 })
 
 sslServer.listen(8070, () => console.log('secure server'))
