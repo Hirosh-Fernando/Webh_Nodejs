@@ -15,9 +15,9 @@ const uuid = require('uuid')
 const { google } = require('googleapis')
 const { OAuth2 } = google.auth
 const client = new OAuth2(
-	'266665356257-hegodqq6j6ivro28ml8bta1tgmlbqnq8.apps.googleusercontent.com',
-	'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',
-	'https://18.205.10.114'
+	'395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com',
+	'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',
+	'https://18.205.10.114:3000/auth/google/callback'
 )
 //user sign in controller
 exports.usersignin = async (req, res) => {
@@ -70,7 +70,7 @@ exports.userGoogleSignin = async (req, res) => {
 		const verify = await client.verifyIdToken({
 			idToken: tokenId,
 			audience:
-				'266665356257-hegodqq6j6ivro28ml8bta1tgmlbqnq8.apps.googleusercontent.com'
+				'395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com'
 		})
 		const { email_verified, email, name, picture } = verify.payload
 		// password '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'
@@ -126,8 +126,7 @@ exports.adminGoogleSignin = async (req, res) => {
 		const verify = await client.verifyIdToken({
 			idToken: tokenId,
 			audience:
-				'266665356257-hegodqq6j6ivro28ml8bta1tgmlbqnq8.apps.googleusercontent.com'
-			// '395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com'
+				'395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com'
 		})
 
 		const { email_verified, email, name, picture } = verify.payload
@@ -199,8 +198,7 @@ exports.adminGoogleSigninValidation = async (req, res) => {
 		const verify = await client.verifyIdToken({
 			idToken: tokenId,
 			audience:
-				'266665356257-hegodqq6j6ivro28ml8bta1tgmlbqnq8.apps.googleusercontent.com'
-			// '395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com'
+				'395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com'
 		})
 
 		const { email_verified, email, name, picture } = verify.payload
@@ -240,8 +238,7 @@ exports.userGoogleSigninValidation = async (req, res) => {
 		const verify = await client.verifyIdToken({
 			idToken: tokenId,
 			audience:
-				'266665356257-hegodqq6j6ivro28ml8bta1tgmlbqnq8.apps.googleusercontent.com'
-			// '395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com'
+				'395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com'
 		})
 
 		const { email_verified, email, name, picture } = verify.payload
