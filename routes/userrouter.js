@@ -61,7 +61,7 @@ router.get('/google', passport.authenticate('google', ['profile', 'email']))
 router.get(
 	'/google/callback',
 	passport.authenticate('google', {
-		successRedirect: 'https://18.205.10.114:3000/feed',
+		successRedirect: 'https://mywebh.com:3000/feed',
 		failureRedirect: '/auth'
 	})
 )
@@ -96,6 +96,14 @@ router.post('/signin', usersignin)
 // router.post('/admin_google_login', adminGoogleSignin);
 // router.post('/user_google_login', userGoogleSignin);
 // router.post('/admin_google_login/validation', adminGoogleSigninValidation);
+
+//user linkedin login
+
+router.get('/linkedin', passport.authenticate('linkedin'), function (req, res) {
+	// The request will be redirected to LinkedIn for authentication, so this
+	// function will not be called.
+	console.log('in')
+})
 
 //admin sign in
 router.post('/admin-signin', adminSignIn)

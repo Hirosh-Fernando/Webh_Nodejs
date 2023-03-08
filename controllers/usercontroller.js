@@ -17,7 +17,7 @@ const { OAuth2 } = google.auth
 const client = new OAuth2(
 	'395423356530-p3dcv116o61fa80d2rsv8sivettc562k.apps.googleusercontent.com',
 	'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',
-	'https://18.205.10.114:3000/auth/google/callback'
+	'https://mywebh.com:3000/auth/google/callback'
 )
 //user sign in controller
 exports.usersignin = async (req, res) => {
@@ -778,7 +778,7 @@ exports.forgotPassword = async (req, res) => {
 		await user.save()
 
 		// Create reset url to email to provided email
-		const resetPasswordUrl = `https://18.205.10.114:3000/password-reset/${resetPasswordToken}`
+		const resetPasswordUrl = `https://mywebh.com:3000/password-reset/${resetPasswordToken}`
 
 		// HTML Message
 		const message = `
@@ -830,7 +830,7 @@ exports.adminForgotPassword = async (req, res) => {
 		await user.save()
 
 		// Create reset url to email to provided email
-		const resetPasswordUrl = `https://18.205.10.114:3001/password-reset/${resetPasswordToken}`
+		const resetPasswordUrl = `https://mywebh.com:3001/password-reset/${resetPasswordToken}`
 
 		// HTML Message
 		const message = `
@@ -1450,7 +1450,7 @@ exports.inviteNewFriend = async (req, res) => {
 		const message = `
             <h1>Your friend ${user.firstname} ${user.lastname} invited to WEBH!</h1>
             <p>Please click on this link to get register to the WebH!</p>
-            <a href="https://18.205.10.114:3000/auth" clicktracking=off>Click here</a>
+            <a href="https://mywebh.com:3000/auth" clicktracking=off>Click here</a>
         `
 
 		try {
